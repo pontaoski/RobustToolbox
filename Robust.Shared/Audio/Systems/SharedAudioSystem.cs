@@ -320,6 +320,14 @@ public abstract partial class SharedAudioSystem : EntitySystem
         comp.FileName = fileName ?? string.Empty;
         comp.Params = audioParams.Value;
         comp.AudioStart = Timing.CurTime;
+        if (specifier is ResolvedCollectionSpecifier collection && collection.Collection is string collectionID) {
+            var caption = ProtoMan.Index<SoundCollectionPrototype>(collectionID).Caption;
+            if (caption is not null)
+            {
+                var capt = AddComp<CaptionComponent>(uid);
+                capt.Caption = caption;
+            }
+        }
 
         if (!audioParams.Value.Loop)
         {
